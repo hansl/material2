@@ -75,7 +75,7 @@ export class TileStyler {
     let percentWidthPerTile = 100 / this._cols;
 
     // Fraction of the vertical gutter size that each column takes up.
-    // For example, if there are 5 columns, each column uses 4/5 = 0.8 times the gutter width.
+    // For example, if there are 5 _columns, each column uses 4/5 = 0.8 times the gutter width.
     let gutterWidthFractionPerTile = (this._cols - 1) / this._cols;
 
     this.setColStyles(tile, colIndex, percentWidthPerTile, gutterWidthFractionPerTile);

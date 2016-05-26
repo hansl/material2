@@ -1,3 +1,6 @@
+// Annotations
+export * from './annotations/field-value';
+
 // RTL
 export * from './rtl/dir';
 
