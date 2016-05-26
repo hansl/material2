@@ -50,6 +50,7 @@ class MdDataTableCell implements DoCheck {
   @Input() title: string;
   @Input() order: number = -1;
   @Input() @BooleanFieldValue() sticky: boolean = false;
+  @Input() field: string | symbol;
 
   /** @internal */
   templateRef: TemplateRef<DataRow>;
@@ -64,7 +65,10 @@ class MdDataTableCell implements DoCheck {
 
 @Directive({selector: '[mdFor]'})
 class MdFor implements DoCheck {
-  constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>) {}
+  columns: MdDataTableCell[] = [];
+  
+  constructor(private _viewContainer: ViewContainerRef, private _renderer: Renderer,
+              private _templateRef: TemplateRef<any>) {}
 
   @Input()
   set mdForOf(value: any[]) {
@@ -77,9 +81,14 @@ class MdFor implements DoCheck {
     this.insertRows(rows, this._viewContainer.length);
   }
 
-  insertRows(rows: Object[], index: number) {
+  insertRows(rows: any[], index: number) {
     for (const row of rows) {
-      this._viewContainer.createEmbeddedView(this._templateRef, { $implicit: row }, index++);
+      for (const col of this.columns) {
+        const el = this._renderer.createElement(null, 'div', null);
+        this._viewContainer.element.nativeElement.parentElement.appendChild(el);
+
+        el.textContent = '' + (<any>row[col.field]);
+      }
     }
   }
 
@@ -170,6 +179,7 @@ class MdDataTable implements DoCheck {
     this.data.getRows(start, 1000)
       .subscribe(rows => {
         // this._ngZone.runOutsideAngular(() => {
+          this._rowsFor.columns = this._columns;
           this._rowsFor.insertRows(rows, start);
           start += rows.length;
         // });
