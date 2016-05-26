@@ -1,4 +1,5 @@
 import {bootstrap} from '@angular/platform-browser-dynamic';
+import {enableProdMode} from '@angular/core';
 import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {ROUTER_PROVIDERS} from '@angular/router';
@@ -12,6 +13,8 @@ import {MdGestureConfig} from '@angular2-material/core/gestures/MdGestureConfig'
 import {MdIconRegistry} from '@angular2-material/icon/icon-registry';
 
 import {DemoApp} from './demo-app/demo-app';
+
+enableProdMode();
 
 bootstrap(DemoApp, [
   ROUTER_PROVIDERS,

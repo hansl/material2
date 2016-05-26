@@ -92,7 +92,9 @@ function _buildAppTree(defaults) {
       'vendor/zone.js/dist/zone.js',
       'vendor/hammerjs/hammer.min.js'
     ],
-    tsCompiler: {},
+    tsCompiler: {
+      additionalFiles: ['**']
+    },
     sassCompiler: {
       includePaths: [
         'src/core/style'

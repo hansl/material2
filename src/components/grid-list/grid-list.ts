@@ -36,7 +36,7 @@ const MD_FIT_MODE = 'fit';
   encapsulation: ViewEncapsulation.None,
 })
 export class MdGridList implements OnInit, AfterContentChecked {
-  /** Number of columns being rendered. */
+  /** Number of _columns being rendered. */
   private _cols: number;
 
   /**
