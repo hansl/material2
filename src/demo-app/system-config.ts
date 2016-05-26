@@ -9,6 +9,7 @@ const components = [
   'button',
   'card',
   'checkbox',
+  'data-table',
   'grid-list',
   'icon',
   'input',
@@ -40,7 +41,8 @@ const packages: any = {
 components.forEach(name => {
   packages[`@angular2-material/${name}`] = {
     format: 'cjs',
-    defaultExtension: 'js'
+    defaultExtension: 'js',
+    main: 'index.js'
   };
 });
 

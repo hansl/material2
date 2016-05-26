@@ -26,6 +26,7 @@ import {GesturesDemo} from '../gestures/gestures-demo';
 import {GridListDemo} from '../grid-list/grid-list-demo';
 import {TabGroupDemo} from '../tab-group/tab-group-demo';
 import {SlideToggleDemo} from '../slide-toggle/slide-toggle-demo';
+import {DataTableDemo} from '../data-table/data-table-demo';
 
 @Component({
   selector: 'home',
@@ -57,6 +58,7 @@ export class Home {}
   new Route({path: '/', component: Home}),
   new Route({path: '/button', component: ButtonDemo}),
   new Route({path: '/card', component: CardDemo}),
+  new Route({path: '/data-table', component: DataTableDemo}),
   new Route({path: '/radio', component: RadioDemo}),
   new Route({path: '/sidenav', component: SidenavDemo}),
   new Route({path: '/slide-toggle', component: SlideToggleDemo}),

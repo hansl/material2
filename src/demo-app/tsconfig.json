@@ -21,7 +21,9 @@
         "../core/*"
       ],
       "@angular2-material/*": [
+        "./components/*/index.ts",
         "./components/*",
+        "../components/*/index.ts",
         "../components/*"
       ]
     }
