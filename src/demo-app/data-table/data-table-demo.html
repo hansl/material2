@@ -1,8 +1,10 @@
 <md-data-table [data]="this">
-  <template md-cell let-name="name" sticky="true" title="Name">{{name}}</template>
-  <template md-cell let-age="age" title="Age">{{age}}</template>
-  <template md-cell let-age="age" title="Age">{{age}}</template>
-  <template md-cell let-age="age" title="Age">{{age}}</template>
-  <template md-cell let-age="age" title="Age">{{age}}</template>
-  <template md-cell let-hair="hair" title="Has Hair">{{hair ? 'yes' : 'no'}}</template>
+  <template md-row let-data="row">
+    <md-cell sticky="true" title="Name">{{data.name}}</md-cell>
+    <md-cell title="Age">{{data.age}}</md-cell>
+    <md-cell title="Age">{{data.age}}</md-cell>
+    <md-cell title="Age">{{data.age}}</md-cell>
+    <md-cell title="Age">{{data.age}}</md-cell>
+    <md-cell title="Has Hair">{{data.hair ? 'yes' : 'no'}}</md-cell>
+  </template>
 </md-data-table>

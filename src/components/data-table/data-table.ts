@@ -45,8 +45,20 @@ export interface IDataTableController {
 
 
 @Directive({
-  selector: '[md-cell]',
+  selector: '[md-row]',
   exportAs: 'row'
+})
+class MdDataTableRow {
+  /** @internal */
+  templateRef: TemplateRef<DataRow>;
+
+  constructor(templateRef: TemplateRef<DataRow>) {
+    this.templateRef = templateRef;
+  }
+}
+
+@Directive({
+  selector: '[md-cell]',
 })
 class MdDataTableCell implements DoCheck {
   @Input() title: string;
@@ -65,29 +77,12 @@ class MdDataTableCell implements DoCheck {
 
 
 @Directive({selector: '[mdFor]'})
-class MdFor implements DoCheck {
+class MdFor {
   constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>) {}
 
-  @Input()
-  set mdForOf(value: any[]) {
-    this.appendRows(value);
-  }
-
-  ngDoCheck() {}
-
-  appendRows(rows: Object[]) {
-    this.insertRows(rows, this._viewContainer.length);
-  }
-
-  insertRows(rows: Object[], index: number) {
+  insertRows(template: TemplateRef<any>, rows: Object[], index: number) {
     for (const row of rows) {
-      this._viewContainer.createEmbeddedView(this._templateRef, { $implicit: row }, index++);
-    }
-  }
-
-  removeRows(start: number, count: number) {
-    while (count--) {
-      this._viewContainer.remove(start);
+      this._viewContainer.createEmbeddedView(template, { $implicit: row }, index++);
     }
   }
 }
@@ -113,7 +108,7 @@ class MdForCell implements DoCheck {
   styleUrls: ['data-table.css'],
   directives: [MdFor, MdForCell, NgTemplateOutlet],
   // encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Detached,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class MdDataTable implements DoCheck {
   private _columns: MdDataTableCell[] = [];
@@ -124,6 +119,7 @@ class MdDataTable implements DoCheck {
   @ViewChild('headerTemplate', { read: TemplateRef }) private _headerTemplate: TemplateRef<MdDataTableCell>;
   @ViewChild('rows', { read: MdFor }) private _rowsFor: MdFor;
   @ContentChildren(MdDataTableCell) private _cells: QueryList<MdDataTableCell>;
+  @ContentChildren(MdDataTableRow) private _row: QueryList<MdDataTableRow>;
 
   constructor(private _viewContainer: ViewContainerRef,
               private _renderer: Renderer,
@@ -133,34 +129,17 @@ class MdDataTable implements DoCheck {
   ngDoCheck() {}
 
   ngAfterContentInit() : any {
-    this._cells.changes.subscribe(() => this._updateCells());
   }
 
   ngAfterViewInit() : any {
     window.setTimeout(() => {
-      this._updateCells();
+      this._updateHeader();
       this._updateData();
     });
   }
 
-  private _updateCells() {
+  private _updateHeader() {
     this._columns = this._cells.toArray();
-
-    // Sort by sticky first, then order. A negative order is last, and the sort function is
-    // stable so the content order is maintained.
-    this._columns.sort((a, b) => {
-      if (a.sticky != b.sticky) {
-        return (+b.sticky) - (+a.sticky);
-      }
-      if (a.order >= 0) {
-        if (b.order >= 0) {
-          return b.order - a.order;
-        }
-        return -1;
-      }
-
-      return 0;
-    });
 
     if (this._headerView) {
       this._headerView.clear();
@@ -175,11 +154,10 @@ class MdDataTable implements DoCheck {
     let start = 0;
     this.data.getRows(start, 1000)
       .subscribe(rows => {
-        this._rowsFor.insertRows(rows, start);
+        this._rowsFor.insertRows(this._row.templateRef, rows, start);
         start += rows.length;
 
-        window.setTimeout(() => this._cdr.markForCheck(), 1000);
-        window.setTimeout(() => this._cdr.markForCheck(), 2000);
+        this._cdr.markForCheck();
       });
   }
 }
@@ -187,5 +165,6 @@ class MdDataTable implements DoCheck {
 
 export const MD_DATA_TABLE_DIRECTIVES: any[] = [
   MdDataTable,
-  MdDataTableCell
+  MdDataTableCell,
+  MdDataTableRow
 ];

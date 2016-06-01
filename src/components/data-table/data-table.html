@@ -1,11 +1,6 @@
 <div>
   <div #header></div>
   <template #rows mdFor let-row="$implicit">
-    <div>
-      <div *mdFor="let cell of _columns">
-        <template mdTemplateOutlet [mdForCell]="{ template: cell.templateRef, context: row }"></template>
-      </div>
-    </div>
   </template>
 </div>
 
