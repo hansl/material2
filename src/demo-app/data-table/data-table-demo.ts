@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MdButton} from '@angular2-material/button/button';
+import {MD_CHECKBOX_DIRECTIVES} from '@angular2-material/checkbox/checkbox';
 import {MD_DATA_TABLE_DIRECTIVES} from '@angular2-material/data-table';
 import {IDataTableController} from '@angular2-material/data-table';
 import {Observable} from 'rxjs/Observable';
@@ -87,7 +88,7 @@ function _generateEntries(amount: number) {
   selector: 'data-table-demo',
   templateUrl: 'data-table-demo.html',
   styleUrls: ['data-table-demo.css'],
-  directives: [MD_DATA_TABLE_DIRECTIVES]
+  directives: [MD_DATA_TABLE_DIRECTIVES, MD_CHECKBOX_DIRECTIVES]
 })
 export class DataTableDemo implements IDataTableController {
   this = this;
