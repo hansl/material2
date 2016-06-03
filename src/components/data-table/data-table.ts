@@ -28,123 +28,76 @@ export declare type DataRow = {
 };
 
 
-declare type Column = {
-  cell: MdDataTableCell;
-  order: number;
-};
-
-
 export interface IDataTableController {
   getRows(start: number, end: number): Observable<DataRow[]>;
 }
 
 
-@Directive({
-  selector: '[md-cell]',
+@Component({
+  selector: 'md-row',
+  template: `Hello world!`,
   exportAs: 'row'
 })
-class MdDataTableCell implements DoCheck {
-  @Input() title: string;
-  @Input() order: number = -1;
-  @Input() @BooleanFieldValue() sticky: boolean = false;
-
-  /** @internal */
-  templateRef: TemplateRef<DataRow>;
-
-  ngDoCheck() {}
-
-  constructor(templateRef: TemplateRef<DataRow>) {
-    this.templateRef = templateRef;
-  }
+class MdDataTableRow {
+  @ContentChildren(MdDataTableCell) cells: QueryList<MdDataTableCell>;
 }
 
 
-@Directive({selector: '[mdFor]'})
-class MdFor implements DoCheck {
-  constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>,
-              private _cdr: ChangeDetectorRef) {}
+@Component({
+  selector: '[md-cell]',
+  template: ``
+})
+class MdDataTableCell {
+  @Input() title: string;
+  @Input() @BooleanFieldValue() sticky: boolean = false;
 
-  @Input()
-  set mdForOf(value: any[]) {
-    this.appendRows(value);
-  }
-
-  ngDoCheck() {}
-
-  appendRows(rows: Object[]) {
-    this.insertRows(rows, this._viewContainer.length);
-  }
-
-  insertRows(rows: Object[], index: number) {
-    for (const row of rows) {
-      this._viewContainer.createEmbeddedView(this._templateRef, { $implicit: row }, index++);
-    }
-    this._cdr.detectChanges();
-  }
-
-  removeRows(start: number, count: number) {
-    while (count--) {
-      this._viewContainer.remove(start);
-    }
-  }
+  constructor(private templateRef: TemplateRef<DataRow>) {}
 }
 
 
 @Component({
   moduleId: module.id,
   selector: 'md-data-table',
-  templateUrl: 'data-table.html',
-  styleUrls: ['data-table.css'],
-  directives: [MdFor, NgTemplateOutlet],
+  templateUrl: './data-table.html',
+  styleUrls: ['./data-table.css'],
+  directives: [NgTemplateOutlet],
   // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.Detached,
 })
-class MdDataTable implements DoCheck {
+class MdDataTable {
   private _columns: MdDataTableCell[] = [];
 
   @Input() data: IDataTableController;
 
   @ViewChild('header', { read: ViewContainerRef }) private _headerView: ViewContainerRef;
-  @ViewChild('headerTemplate', { read: TemplateRef }) private _headerTemplate: TemplateRef<MdDataTableCell>;
-  @ViewChild('rows', { read: MdFor }) private _rowsFor: MdFor;
-  @ContentChildren(MdDataTableCell) private _cells: QueryList<MdDataTableCell>;
+  @ViewChild('row', { read: ViewContainerRef }) private _rowView: ViewContainerRef;
+
+  @ViewChild('headerTemplate', { read: TemplateRef }) private _headerTemplate: TemplateRef<any>;
+  @ViewChild('rowTemplate', { read: TemplateRef }) private _rowTemplate: TemplateRef<any>;
+
+  @ContentChildren(MdDataTableRow) private _rows: QueryList<MdDataTableRow>;
 
   constructor(private _viewContainer: ViewContainerRef,
               private _renderer: Renderer,
               private _ngZone: NgZone,
               private _cdr: ChangeDetectorRef) {}
 
-  ngDoCheck() {}
-
   ngAfterContentInit() : any {
-    this._cells.changes.subscribe(() => this._updateCells());
-  }
-
-  ngAfterViewInit() : any {
     window.setTimeout(() => {
-      this._updateCells();
       this._updateData();
     });
   }
 
-  private _updateCells() {
-    this._columns = this._cells.toArray();
-
-    if (this._headerView) {
-      this._headerView.clear();
-      this._columns.forEach(col => {
-        this._headerView.createEmbeddedView(this._headerTemplate, col);
-        this._cdr.markForCheck();
-      });
-    }
-  }
-
   private _updateData() {
     let start = 0;
+
+    const rowComponents = this._rows.toArray();
     this.data.getRows(start, 1000)
-      .subscribe(rows => {
-        this._rowsFor.insertRows(rows, start);
-        start += rows.length;
+      .subscribe(dataRows => {
+        for (const dataRow of dataRows) {
+          // const rowView = this._viewContainer.createEmbeddedView(this._rowTemplate, dataRow, start++);
+          this._viewContainer.createComponent()
+        }
       });
   }
 }
@@ -152,5 +105,6 @@ class MdDataTable implements DoCheck {
 
 export const MD_DATA_TABLE_DIRECTIVES: any[] = [
   MdDataTable,
-  MdDataTableCell
+  MdDataTableCell,
+  MdDataTableRow
 ];

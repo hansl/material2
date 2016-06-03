@@ -1,8 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MdButton} from '@angular2-material/button/button';
 import {MD_CHECKBOX_DIRECTIVES} from '@angular2-material/checkbox/checkbox';
-import {MD_DATA_TABLE_DIRECTIVES} from '@angular2-material/data-table';
-import {IDataTableController} from '@angular2-material/data-table';
+import {MD_DATA_TABLE_DIRECTIVES, IDataTableController} from '@angular2-material/data-table';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/delay';
 
