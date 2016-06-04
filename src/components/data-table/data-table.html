@@ -1,7 +1,7 @@
-<div>
+<div class="table" (scroll)="scroll($event)">
   <div #header></div>
-  <template #rows mdFor let-row="$implicit">
-  </template>
+
+  <template #rows mdFor></template>
 </div>
 
 <template #headerTemplate let-title="title">

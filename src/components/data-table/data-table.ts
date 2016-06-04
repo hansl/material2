@@ -7,6 +7,7 @@ import {
   Component,
   Directive,
   DoCheck,
+  ElementRef,
   EmbeddedViewRef,
   Input,
   NgZone,
@@ -40,40 +41,54 @@ export interface IDataTableController {
 
 
 @Directive({
-  selector: '[md-row]',
-  exportAs: 'row'
+  selector: '[md-row]'
 })
 class MdDataTableRow {
   /** @internal */
-  templateRef: TemplateRef<DataRow>;
+  templateRef: TemplateRef<any>;
 
-  constructor(templateRef: TemplateRef<DataRow>) {
+  constructor(templateRef: TemplateRef<any>) {
     this.templateRef = templateRef;
   }
 }
 
+
 @Directive({
-  selector: '[md-cell]',
+  selector: 'md-cell',
 })
-class MdDataTableCell implements DoCheck {
+class MdDataTableCell {
   @Input() title: string;
   @Input() order: number = -1;
   @Input() @BooleanFieldValue() sticky: boolean = false;
+}
 
-  /** @internal */
-  templateRef: TemplateRef<DataRow>;
 
-  ngDoCheck() {}
+@Component({
+  selector: 'md-table',
+  template: `<div><ng-content></ng-content></div>`,
+  styleUrls: ['data-table.css']
+})
+class MdScrollableTable implements AfterContentInit {
+  constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>,
+              private _renderer: Renderer, private _element: ElementRef) {}
 
-  constructor(templateRef: TemplateRef<DataRow>) {
-    this.templateRef = templateRef;
+  ngAfterContentInit(): any {
+    console.log(2);
+    this._renderer.listen(this._element.nativeElement, 'scroll', function() {
+      console.log(1);
+    });
+  }
+
+  scroll($event: Event) {
+    console.log(1);
   }
 }
 
 
 @Directive({selector: '[mdFor]'})
 class MdFor {
-  constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>) {}
+  constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef<any>,
+              private _renderer: Renderer, private _element: ElementRef) {}
 
   insertRows(template: TemplateRef<any>, rows: Object[], index: number) {
     for (const row of rows) {
@@ -83,25 +98,12 @@ class MdFor {
 }
 
 
-@Directive({selector: '[mdTemplateOutlet]'})
-class MdForCell implements DoCheck {
-  constructor(private _viewContainerRef: ViewContainerRef) {}
-
-  ngDoCheck() {}
-
-  @Input()
-  set mdForCell(value: { template: TemplateRef<Object>, context: Object }) {
-    this._viewContainerRef.createEmbeddedView(value.template, value.context);
-  }
-}
-
-
 @Component({
   moduleId: module.id,
   selector: 'md-data-table',
   templateUrl: 'data-table.html',
   styleUrls: ['data-table.css'],
-  directives: [MdFor, MdForCell, NgTemplateOutlet],
+  directives: [MdFor, NgTemplateOutlet],
   // encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -133,6 +135,10 @@ class MdDataTable implements DoCheck {
     });
   }
 
+  scroll(event: Event) {
+    console.log(event);
+  }
+
   private _updateHeader() {
     this._columns = this._cells.toArray();
 
@@ -147,7 +153,7 @@ class MdDataTable implements DoCheck {
 
   private _updateData() {
     let start = 0;
-    this.data.getRows(start, 1000)
+    this.data.getRows(start, 100)
       .subscribe(rows => {
         this._rowsFor.insertRows(this._row.toArray()[0].templateRef, rows, start);
         start += rows.length;
