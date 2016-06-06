@@ -16,6 +16,9 @@ export {
 } from './portal/portal-directives';
 export {DomPortalHost} from './portal/dom-portal-host';
 
+// Dispatchers
+export {MdUniqueSelectionDispatcher} from './coordination/unique-selection-dispatcher';
+
 // Overlay
 export {Overlay, OVERLAY_CONTAINER_TOKEN, OVERLAY_PROVIDERS} from './overlay/overlay';
 export {OverlayRef} from './overlay/overlay-ref';

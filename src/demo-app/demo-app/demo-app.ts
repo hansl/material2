@@ -10,6 +10,7 @@ import {MdToolbar} from '@angular2-material/toolbar/toolbar';
 
 import {CardDemo} from '../card/card-demo';
 import {ButtonDemo} from '../button/button-demo';
+import {FormMixedDemo} from '../form-mixed/form-mixed-demo';
 import {IconDemo} from '../icon/icon-demo';
 import {RadioDemo} from '../radio/radio-demo';
 import {SidenavDemo} from '../sidenav/sidenav-demo';
@@ -58,6 +59,7 @@ export class Home {}
   new Route({path: '/', component: Home}),
   new Route({path: '/button', component: ButtonDemo}),
   new Route({path: '/card', component: CardDemo}),
+  new Route({path: '/form-mixed', component: FormMixedDemo}),
   new Route({path: '/radio', component: RadioDemo}),
   new Route({path: '/sidenav', component: SidenavDemo}),
   new Route({path: '/slide-toggle', component: SlideToggleDemo}),
