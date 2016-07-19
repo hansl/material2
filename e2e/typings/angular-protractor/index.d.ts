@@ -1536,9 +1536,9 @@ declare namespace protractor {
          *     by.repeater('cat in pets').column('{{cat.age}}'));
          *
          * // Returns a promise that resolves to an array of WebElements containing
-         * // all top level elements repeated by the repeater. For 2 pets rows resolves
+         * // all top level elements repeated by the repeater. For 2 pets sections resolves
          * // to an array of 2 elements.
-         * var rows = element.all(by.repeater('cat in pets'));
+         * var sections = element.all(by.repeater('cat in pets'));
          *
          * // Returns a promise that resolves to an array of WebElements containing all
          * // the elements with a binding to the book's name.

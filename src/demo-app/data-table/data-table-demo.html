@@ -1,0 +1,11 @@
+<h1>Simple: Basic</h1>
+<md-table [data]="myData">
+</md-table>
+
+
+<h1>Simple: Custom Cells</h1>
+<md-table [data]="myData">
+  <md-section #row="$implicit">
+    <template md-cell title="Name">{{row.data.name}}</template>
+  </md-section>
+ </md-table>

@@ -3,6 +3,7 @@ import {Home} from './demo-app';
 import {ButtonDemo} from '../button/button-demo';
 import {BaselineDemo} from '../baseline/baseline-demo';
 import {ButtonToggleDemo} from '../button-toggle/button-toggle-demo';
+import {DataTableDemo} from '../data-table/data-table-demo';
 import {TabsDemo} from '../tabs/tab-group-demo';
 import {GridListDemo} from '../grid-list/grid-list-demo';
 import {GesturesDemo} from '../gestures/gestures-demo';
@@ -30,6 +31,7 @@ export const routes: RouterConfig = [
   {path: '', component: Home},
   {path: 'button', component: ButtonDemo},
   {path: 'card', component: CardDemo},
+  {path: 'data-table', component: DataTableDemo},
   {path: 'radio', component: RadioDemo},
   {path: 'sidenav', component: SidenavDemo},
   {path: 'slide-toggle', component: SlideToggleDemo},

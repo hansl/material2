@@ -15,7 +15,7 @@
     <md-card-title>Fixed-height grid list</md-card-title>
     <md-card-content>
       <md-grid-list [cols]="fixedCols" [rowHeight]="fixedRowHeight">
-        <md-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+        <md-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.sections"
                       [style.background]="tile.color">
           {{tile.text}}
         </md-grid-tile>
