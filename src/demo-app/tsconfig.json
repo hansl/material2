@@ -24,7 +24,14 @@
         "./components/*",
         "../components/*"
       ]
-    }
+    },
+    "lib": [
+      "es5", "es6", "dom", "es2015"
+    ],
+    "types": [
+      "jasmine",
+      "hammerjs"
+    ]
   },
   "angularCompilerOptions": {
     "genDir": "../../dist",

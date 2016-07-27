@@ -32,9 +32,6 @@ module.exports = function(defaults) {
  */
 function _buildDemoAppInputTree() {
   return new MergeTree([
-    new Funnel('typings', {
-      destDir: 'typings'
-    }),
     new Funnel('src', {
       include: ['components/**/*', 'core/**/*'],
       destDir: 'src/demo-app'
@@ -51,9 +48,6 @@ function _buildDemoAppInputTree() {
  */
 function _buildE2EAppInputTree() {
   return new MergeTree([
-    new Funnel('typings', {
-      destDir: 'typings'
-    }),
     new Funnel('src', {
       include: ['components/**/*', 'core/**/*'],
       destDir: 'src/e2e-app'
